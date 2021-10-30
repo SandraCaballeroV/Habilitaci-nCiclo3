@@ -1,7 +1,9 @@
 import React from 'react';
 
+
 const Index = () => {
     return <div class="text-center"> Bienvenidos </div>;
+
     
 };
 

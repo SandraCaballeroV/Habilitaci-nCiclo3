@@ -28,40 +28,52 @@ const productosBackend =[
     estado: 'Disponible',
     Descripción: 'Doble puntas',
   },
-]
+];
 
 const Productos = () => {
-  const [mostrarTabla, setMostrarTabla] =useState (true);
+   const [mostrarTabla, setMostrarTabla] =useState (true);
    const [textoBoton, setTextoBoton]= useState ('Crear nuevo Producto');
    const [productos, setProductos] =useState ([]);
-    
+   const [colorBoton, setColorBoton] = useState ('gray');
+   
    useEffect(() => {
-      setProductos (productosBackend);
-    }, []);
+   }, []);
    
    
    useEffect(()=>{
      if (mostrarTabla){
-       setTextoBoton("CREAR NUEVO PRODUCTO");
+       setTextoBoton("Crear Nuevo Producto");
+       setColorBoton ("gray")
     }else {
-       setTextoBoton('MOSTRAR TODOS LOS PRODUCTOS');
+       setTextoBoton('Mostrar Todos los Productos');
+       setColorBoton ("indigo")
      }
    }, [mostrarTabla]);
    
-
-
   return (
     <div className= 'flex h-full w-full flex-col items-center justify-start'>
       <div className='flex flex-col'>
-      <h2 className='text-2xl font-extrabold text-blue-700'>ADMINISTRACIÓN DE PRODUCTOS</h2>
+      <h2 className='text-2xl font-extrabold text-black-700'>ADMINISTRACIÓN DE PRODUCTOS</h2>
       </div>
-      <button onClick={()=>{setMostrarTabla (!mostrarTabla);}} className=' text-white bg-indigo-500 rounded-md self-start  p-2 m-6 w-28'>{textoBoton}</button>
-      {mostrarTabla ? <TablaProductos listaProductos={productos} /> : <FormularioCreacionProductos/>}
+      <button onClick={()=>{setMostrarTabla (!mostrarTabla);}} 
+      className={`text-white bg-${colorBoton}-500 rounded-md self-start  p-2 m-6 w-28 `}>{textoBoton}</button>
+      {mostrarTabla ? (
+      <TablaProductos listaProductos={productos} /> 
+      ):( 
+      <FormularioCreacionProductos 
+      funcionParaMostrarlaTabla= {setMostrarTabla} 
+      listaProductos={productos}
+      funcionParaAgregarProductos={setProductos}
+      />
+      )}
+      <ToastContainer position='bottom-center' autoClose={5000} />
     </div>    
   );
 };
 
 const TablaProductos =({listaProductos})=>{
+
+
   useEffect(()=>{
     console.log("listado de productos desde el backend, listaProducto")
   }, [listaProductos]);
@@ -90,18 +102,94 @@ const TablaProductos =({listaProductos})=>{
   </div>
   )
 };
-const FormularioCreacionProductos =()=>{
+const FormularioCreacionProductos =({
+  funcionParaMostrarlaTabla,
+  listaProductos,
+  funcionParaAgregarProductos,
+})=>{
+  const [nombre, setNombre]= useState();
+  const[valor, setValor] =useState();
+  const[estado, setEstado]= useState();
+  const[descripcion, setDescripcion]= useState();
+  
+  const enviarAlBackend=() => {
+    console.log('nombre', nombre, 'valor', valor, 'estado', estado, 'descripcion', descripcion);
+    toast.success ("Su producto fue creado con éxito!");
+    funcionParaMostrarlaTabla(true);
+    funcionParaAgregarProductos([
+      ...listaProductos,
+       {nombre: nombre, valor: valor, estado: estado, descripcion: descripcion},
+      ]);};
+
   return (
   <div className ="flex flex-col items-center Justify-center"> 
   <h2 className='text-1xl font-extrabold text-black'> NUEVO PRODUCTO</h2>
-    <form className= 'grid grid-cols-1'>
-      <input className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' type ='text'/>
-      <input className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' type ='text'/>
-      <input className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' type ='text'/>
-      <input className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2'type ='text'/>
-      <buttton className= 'col-span-1 bg-pink-500 p-2 rounded-full shadow-md hover: bg-pink-300 text-white text-center'> Guardar Producto</buttton>
+    <form className= 'flex flex-col'>
+      <label className='flex flex-col' htmlFor='nombre'>
+        Nombre del Producto:
+      <input 
+      name='nombre'
+       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+      type='text'
+      placeholder='Producto a crear'
+      value={nombre}
+      onChange ={(e)=> {
+        setNombre (e.target.value);
+      }}
+      />
+      </label>
+      <label className='flex flex-col' htmlFor='valor'>
+        Precio:  $
+      <input
+      name='valor'
+       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+      type='number'
+      min= {1000}
+      max= {500000}
+      placeholder='Precio'
+      value={valor}
+      onChange ={(e)=> {
+        setValor (e.target.value);
+      }}
+      />
+      </label>
+      <label className='flex flex-col' htmlFor='estado'>
+        Estado de producto : 
+      <select value={estado}
+      onChange ={(e)=> {
+        setEstado (e.target.value);
+      }}
+       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2'>
+        <option disabled> seleccione una opción</option>
+        <option> Disponible</option>
+        <option> No Disponible</option>
+      </select>
+      </label>
+      <label className='flex flex-col' htmlFor='descripcion'>
+        Descripción del Producto: 
+      <input
+      name='descripcion'
+       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+      type='text'
+      placeholder='Descripción del producto'
+      value={descripcion}
+      onChange ={(e)=> {
+        setDescripcion (e.target.value);
+      }}
+      />
+      </label>
+
+      <button
+          type='button'
+          className='col-span-2 bg-indigo-400 p-2 rounded-full shadow-md hover:bg-gray-600 text-white'
+          onClick={()=> {
+            enviarAlBackend();
+          }}
+        >
+          Guardar Producto
+        </button>
       </form>
-      </div>
-  )
+    </div>
+  );
 };
 export default Productos;

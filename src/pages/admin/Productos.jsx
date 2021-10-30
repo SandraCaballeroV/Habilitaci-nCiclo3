@@ -114,12 +114,17 @@ const FormularioCreacionProductos =({
   
   const enviarAlBackend=() => {
     console.log('nombre', nombre, 'valor', valor, 'estado', estado, 'descripcion', descripcion);
+    if (nombre===null || valor===null || descripcion===null || estado===null){
+      toast.error ("Debe llenar todos los campos");
+    }else {
     toast.success ("Su producto fue creado con éxito!");
     funcionParaMostrarlaTabla(true);
     funcionParaAgregarProductos([
       ...listaProductos,
        {nombre: nombre, valor: valor, estado: estado, descripcion: descripcion},
-      ]);};
+      ]);
+    }
+  };
 
   return (
   <div className ="flex flex-col items-center Justify-center"> 

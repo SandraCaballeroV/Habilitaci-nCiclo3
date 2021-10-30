@@ -107,14 +107,14 @@ const FormularioCreacionProductos =({
   listaProductos,
   funcionParaAgregarProductos,
 })=>{
-  const [nombre, setNombre]= useState();
-  const[valor, setValor] =useState();
-  const[estado, setEstado]= useState();
-  const[descripcion, setDescripcion]= useState();
+  const [nombre, setNombre]= useState('');
+  const[valor, setValor] =useState('');
+  const[estado, setEstado]= useState('');
+  const[descripcion, setDescripcion]= useState('');
   
   const enviarAlBackend=() => {
     console.log('nombre', nombre, 'valor', valor, 'estado', estado, 'descripcion', descripcion);
-    if (nombre===null || valor===null || descripcion===null || estado===null){
+    if (nombre==='' || valor==='' || descripcion==='' || estado===''){
       toast.error ("Debe llenar todos los campos");
     }else {
     toast.success ("Su producto fue creado con éxito!");
@@ -141,6 +141,7 @@ const FormularioCreacionProductos =({
       onChange ={(e)=> {
         setNombre (e.target.value);
       }}
+      required
       />
       </label>
       <label className='flex flex-col' htmlFor='valor'>
@@ -156,6 +157,7 @@ const FormularioCreacionProductos =({
       onChange ={(e)=> {
         setValor (e.target.value);
       }}
+      required
       />
       </label>
       <label className='flex flex-col' htmlFor='estado'>
@@ -164,7 +166,10 @@ const FormularioCreacionProductos =({
       onChange ={(e)=> {
         setEstado (e.target.value);
       }}
-       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2'>
+       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+         name='estado'
+         required
+         >
         <option disabled> seleccione una opción</option>
         <option> Disponible</option>
         <option> No Disponible</option>
@@ -181,11 +186,12 @@ const FormularioCreacionProductos =({
       onChange ={(e)=> {
         setDescripcion (e.target.value);
       }}
+      required
       />
       </label>
 
       <button
-          type='button'
+          type='submit'
           className='col-span-2 bg-indigo-400 p-2 rounded-full shadow-md hover:bg-gray-600 text-white'
           onClick={()=> {
             enviarAlBackend();

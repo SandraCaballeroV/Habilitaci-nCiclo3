@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import PrivateLayout from 'layouts/PrivateLayout';
 import PublicLayout from 'layouts/PublicLayout';
 import Index from 'pages/Index';
@@ -6,16 +6,31 @@ import Admin from '../src/pages/Index';
 import Productos from 'pages/admin/Productos';
 import Login from '../src/pages/auth/Login';
 import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
+import 'styles/styles.css'
 import Registro from '../src/pages/auth/Registro';
 import AuthLayout from 'layouts/AuthLayout';
 import Ventas from '../src/pages/admin/Ventas';
 import Usuarios from '../src/pages/admin/Usuarios';
 import PrivateRoute from 'components/PrivateRoute';
-import "tailwindcss/tailwind.css"
+import "tailwindcss/tailwind.css";
+import {DarkModeContext , } from '../src/context/darkMode';
+import {UserContext} from '../src/context/userContext';
+
+
 
 
 function App() {
+  const [darkMode, setDarkMode] = useState(false);
+  const [userData, setUserData] = useState({});
+  useEffect(() => {
+    console.log('modo dark:', darkMode);
+  }, [darkMode]);
   return (
+
+    <div className='App'>
+      <UserContext.Provider value={{ userData, setUserData }}>
+      <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
+
           <Router>
               <Switch>
                 <Route path={['/admin', '/admin/productos', '/admin/ventas', '/admin/usuarios']}>
@@ -57,6 +72,10 @@ function App() {
                 </Route>
               </Switch>
             </Router>
+            </DarkModeContext.Provider>
+        </UserContext.Provider>
+      
+      </div>
  );
 }
 

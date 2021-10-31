@@ -1,42 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
-import {list} from 'purgecss/node_modules/postcss'
 import 'react-toastify/dist/ReactToastify.css';
+import ReactLoading from 'react-loading';
 
-const productosBackend =[
+const productosBackend =  [
   {
+    id : '1',
     nombre: 'Lápiz Negro',
     valor: '1000',
     estado: 'Disponible',
-    Descripción: 'Color negro HB2',
+    descripcion: 'Color negro HB2',
   },
   {
+    id: '2',
     nombre: 'Lápiz Rojo',
     valor: '1000',
-    estado: 'Disponible',
-    Descripción: 'Color negro HB2',
+    estado: 'No Disponible',
+    descripcion: 'Color negro HB2',
   },
   {
+    id: '3',
     nombre: 'Lápiz HB5',
     valor: '1000',
     estado: 'Disponible',
-    Descripción: 'Color negro',
+    descripcion: 'Color negro',
   },
   {
+    id: '4',
     nombre: 'Scapuntas',
     valor: '1000',
     estado: 'Disponible',
-    Descripción: 'Doble puntas',
+    descripcion: 'Doble puntas',
   },
 ];
 
 const Productos = () => {
-   const [mostrarTabla, setMostrarTabla] =useState (true);
-   const [textoBoton, setTextoBoton]= useState ('Crear nuevo Producto');
-   const [productos, setProductos] =useState ([]);
-   const [colorBoton, setColorBoton] = useState ('gray');
-   
-   useEffect(() => {
+  const [textoBoton, setTextoBoton]= useState ('Crear Nuevo Producto');
+  const [productos, setProductos] =useState ([]);
+  const [colorBoton, setColorBoton] = useState ('gray');
+  const [mostrarTabla, setMostrarTabla] =useState (true); 
+  
+  useEffect(() => {
+     //lista producto desde backend
+     setProductos(productosBackend);
    }, []);
    
    
@@ -49,33 +55,38 @@ const Productos = () => {
        setColorBoton ("indigo")
      }
    }, [mostrarTabla]);
-   
+
   return (
     <div className= 'flex h-full w-full flex-col items-center justify-start'>
       <div className='flex flex-col'>
       <h2 className='text-2xl font-extrabold text-black-700'>ADMINISTRACIÓN DE PRODUCTOS</h2>
+      <button 
+      onClick={()=>{
+        setMostrarTabla (!mostrarTabla);
+      }} 
+      className={`text-white bg-${colorBoton}-500 rounded-md self-start  p-2 m-6 w-28 `}
+      >
+        {textoBoton}
+        </button>
       </div>
-      <button onClick={()=>{setMostrarTabla (!mostrarTabla);}} 
-      className={`text-white bg-${colorBoton}-500 rounded-md self-start  p-2 m-6 w-28 `}>{textoBoton}</button>
       {mostrarTabla ? (
-      <TablaProductos listaProductos={productos} /> 
-      ):( 
-      <FormularioCreacionProductos 
-      funcionParaMostrarlaTabla= {setMostrarTabla} 
-      listaProductos={productos}
-      funcionParaAgregarProductos={setProductos}
-      />
+        <TablaProductos
+           listaProductos={productos}
+          
+        />
+      ) : (
+        <FormularioCreacionProductos
+          
+        />
       )}
       <ToastContainer position='bottom-center' autoClose={5000} />
-    </div>    
+    </div>
   );
 };
 
 const TablaProductos =({listaProductos})=>{
-
-
-  useEffect(()=>{
-    console.log("listado de productos desde el backend, listaProducto")
+useEffect(()=>{
+    console.log("listado de productos desde el backend", listaProductos)
   }, [listaProductos]);
   
   return (
@@ -84,6 +95,7 @@ const TablaProductos =({listaProductos})=>{
   <table>
    <thead>
      <tr>
+       <th> id </th>
        <th>Producto</th>
        <th>Valor</th>
        <th>Estado</th>
@@ -91,45 +103,54 @@ const TablaProductos =({listaProductos})=>{
      </tr>
    </thead>
      <tbody>
-       <tr>
-       <td> Dato1 </td>
-       <td> Dato2 </td>
-       <td> Dato3 </td>
-       <td> Dato3 </td>
+       {listaProductos.map((productos)=>{
+        return (
+          <tr> 
+            <td>{productos.id}</td>      
+          <td>{ productos.nombre} </td>
+          <td> {productos.valor} </td>
+          <td> {productos.estado} </td>
+          <td> {productos.descripcion}</td>
        </tr>
-     </tbody>
-      </table>
-  </div>
-  )
+        );
+       })}
+       </tbody>
+       </table>
+       </div>
+  );
 };
-const FormularioCreacionProductos =({
-  funcionParaMostrarlaTabla,
-  listaProductos,
-  funcionParaAgregarProductos,
-})=>{
-  const [nombre, setNombre]= useState('');
-  const[valor, setValor] =useState('');
-  const[estado, setEstado]= useState('');
-  const[descripcion, setDescripcion]= useState('');
+const FormularioCreacionProductos =({ setMostrarTabla, listaProductos, setProductos})=>{
+  const form=useRef(null);
   
-  const enviarAlBackend=() => {
-    console.log('nombre', nombre, 'valor', valor, 'estado', estado, 'descripcion', descripcion);
-    if (nombre==='' || valor==='' || descripcion==='' || estado===''){
-      toast.error ("Debe llenar todos los campos");
-    }else {
-    toast.success ("Su producto fue creado con éxito!");
-    funcionParaMostrarlaTabla(true);
-    funcionParaAgregarProductos([
-      ...listaProductos,
-       {nombre: nombre, valor: valor, estado: estado, descripcion: descripcion},
-      ]);
-    }
+  const submitForm = (e) => {
+    e.preventDefault ();
+    const fd= new FormData(form.current);
+    
+    const nuevoProducto ={};
+    fd.forEach((value, key)  => {
+      nuevoProducto[key]=value;
+  });
+
+    setMostrarTabla(true);
+    setProductos([...listaProductos, nuevoProducto]);
+  
+    toast.success ('Producto creado con éxito!');
   };
 
   return (
   <div className ="flex flex-col items-center Justify-center"> 
   <h2 className='text-1xl font-extrabold text-black'> NUEVO PRODUCTO</h2>
-    <form className= 'flex flex-col'>
+    <form ref= {form} onSubmit={submitForm} className= 'flex flex-col'>
+    <label className='flex flex-col' htmlFor='nombre'>
+        Id Producto:
+      <input 
+      name='id'
+       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
+      type='text'
+      placeholder='Id' 
+      required
+      />
+      </label>
       <label className='flex flex-col' htmlFor='nombre'>
         Nombre del Producto:
       <input 
@@ -137,10 +158,6 @@ const FormularioCreacionProductos =({
        className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
       type='text'
       placeholder='Producto a crear'
-      value={nombre}
-      onChange ={(e)=> {
-        setNombre (e.target.value);
-      }}
       required
       />
       </label>
@@ -153,24 +170,20 @@ const FormularioCreacionProductos =({
       min= {1000}
       max= {500000}
       placeholder='Precio'
-      value={valor}
-      onChange ={(e)=> {
-        setValor (e.target.value);
-      }}
       required
       />
       </label>
       <label className='flex flex-col' htmlFor='estado'>
         Estado de producto : 
-      <select value={estado}
-      onChange ={(e)=> {
-        setEstado (e.target.value);
-      }}
-       className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
+      <select 
+      className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2'
          name='estado'
          required
+         defaultValue={0}
          >
-        <option disabled> seleccione una opción</option>
+        <option disabled value={0}>
+           seleccione una opción
+           </option>
         <option> Disponible</option>
         <option> No Disponible</option>
       </select>
@@ -182,10 +195,6 @@ const FormularioCreacionProductos =({
        className= 'bg-gray-50 border-gray-600 p-2 rounded-lg m-2' 
       type='text'
       placeholder='Descripción del producto'
-      value={descripcion}
-      onChange ={(e)=> {
-        setDescripcion (e.target.value);
-      }}
       required
       />
       </label>
@@ -193,9 +202,7 @@ const FormularioCreacionProductos =({
       <button
           type='submit'
           className='col-span-2 bg-indigo-400 p-2 rounded-full shadow-md hover:bg-gray-600 text-white'
-          onClick={()=> {
-            enviarAlBackend();
-          }}
+  
         >
           Guardar Producto
         </button>

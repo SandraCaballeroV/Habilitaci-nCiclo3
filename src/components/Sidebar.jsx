@@ -1,40 +1,39 @@
 //import ImagenLogo from '../media/ImagenLogo.png';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useActiveRoute from '../hooks/useActiveRoute';
+import ImagenLogo from './ImagenLogo';
 
 import PrivateComponent from './PrivateComponent';
 
 const Sidebar = () => {
-   
-   
-
-    const cerrarSesion = () => {
+   const cerrarSesion = () => {
     };
 
   return (
+    
     <nav className='hidden lg:flex lg:w-72 border border-gray-300 h-full flex-col bg-gray-200 p-4 sidebar'>
-      <Link to='/admin'>
-  
-      </Link>
-
+    <Link to='/admin'>
+      <ImagenLogo />
+    </Link>     
       <div className='my-4'>
         
     
-          <Ruta icono='fas fa-car' ruta='/admin/productos' nombre='Productos' />
+          <Ruta  ruta='/admin/productos' nombre='Productos' />
        
         
-          <Ruta icono='fas fa-cash-register' ruta='/admin/ventas' nombre='Ventas' />
+          <Ruta ruta='/admin/ventas' nombre='Ventas' />
         
       
-          <Ruta icono='fas fa-users' ruta='/admin/usuarios' nombre='Usuarios' />
+          <Ruta ruta='/admin/usuarios' nombre='Usuarios' />
        
       </div>
-      <button onClick={() => cerrarSesion()}>Cerrar Sesión</button>
+      <button  onClick={() => cerrarSesion()}>Cerrar Sesión</button>
     </nav>
   );
 };
 
-const Ruta = ({ icono, ruta, nombre, usuario }) => {
+const Ruta = ({ ruta, nombre, usuario }) => {
   console.log('usuario', usuario);
   const isActive = useActiveRoute(ruta);
   return (
@@ -51,7 +50,7 @@ const Ruta = ({ icono, ruta, nombre, usuario }) => {
           </>
         ) : (
           <>
-            <i className={`${icono} w-10`} />
+            <i className={` w-10`} />
             {nombre}
           </>
         )}

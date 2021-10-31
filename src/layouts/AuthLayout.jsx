@@ -1,7 +1,7 @@
-import ImagenLogo from '../media/ImagenLogo.png';
+
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Logo from '../media/ImagenLogo.png';
+import Logo from '../media/Logo.png';
 
 const AuthLayout = ({ children }) => {
   return (

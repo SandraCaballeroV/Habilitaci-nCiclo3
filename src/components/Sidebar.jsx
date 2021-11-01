@@ -1,7 +1,7 @@
 //import ImagenLogo from '../media/ImagenLogo.png';
 import React, { useEffect } from 'react';
 import ImagenLogo from './ImagenLogo';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import useActiveRoute from 'hooks/useActiveRoute';
 import PrivateComponent from './PrivateComponent';
 

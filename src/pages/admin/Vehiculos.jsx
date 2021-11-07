@@ -337,65 +337,81 @@ const FormularioCreacionVehiculos = ({ setMostrarTabla, listaVehiculos, setVehic
       }
     );
 
+    // const options = {
+    //   method: 'POST',
+    //   url: 'http://localhost:5000/vehiculos/nuevo/',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   data: { name: nuevoVehiculo.name, brand: nuevoVehiculo.brand, model: nuevoVehiculo.model },
+    // };
 
+    // await axios
+    //   .request(options)
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //     toast.success('Vehículo agregado con éxito');
+    //   })
+    //   .catch(function (error) {
+    //     console.error(error);
+    //     toast.error('Error creando un vehículo');
+    //   });
 
-setMostrarTabla(true);
-};
+    setMostrarTabla(true);
+  };
 
-return (
-  <div className='flex flex-col items-center justify-center'>
-    <h2 className='text-2xl font-extrabold text-gray-800'>Crear nuevo vehículo</h2>
-    <form ref={form} onSubmit={submitForm} className='flex flex-col'>
-      <label className='flex flex-col' htmlFor='nombre'>
-        Nombre del vehículo
-        <input
-          name='name'
-          className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-          type='text'
-          placeholder='Corolla'
-          required
-        />
-      </label>
-      <label className='flex flex-col' htmlFor='marca'>
-        Marca del vehículo
-        <select
-          className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-          name='brand'
-          required
-          defaultValue={0}
+  return (
+    <div className='flex flex-col items-center justify-center'>
+      <h2 className='text-2xl font-extrabold text-gray-800'>Crear nuevo vehículo</h2>
+      <form ref={form} onSubmit={submitForm} className='flex flex-col'>
+        <label className='flex flex-col' htmlFor='nombre'>
+          Nombre del vehículo
+          <input
+            name='name'
+            className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
+            type='text'
+            placeholder='Corolla'
+            required
+          />
+        </label>
+        <label className='flex flex-col' htmlFor='marca'>
+          Marca del vehículo
+          <select
+            className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
+            name='brand'
+            required
+            defaultValue={0}
+          >
+            <option disabled value={0}>
+              Seleccione una opción
+            </option>
+            <option>Renault</option>
+            <option>Toyota</option>
+            <option>Ford</option>
+            <option>Mazda</option>
+            <option>Chevrolet</option>
+          </select>
+        </label>
+        <label className='flex flex-col' htmlFor='modelo'>
+          Modelo del vehículo
+          <input
+            name='model'
+            className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
+            type='number'
+            min={1992}
+            max={2022}
+            placeholder='2014'
+            required
+          />
+        </label>
+
+        <button
+          type='submit'
+          className='col-span-2 bg-green-400 p-2 rounded-full shadow-md hover:bg-green-600 text-white'
         >
-          <option disabled value={0}>
-            Seleccione una opción
-          </option>
-          <option>Renault</option>
-          <option>Toyota</option>
-          <option>Ford</option>
-          <option>Mazda</option>
-          <option>Chevrolet</option>
-        </select>
-      </label>
-      <label className='flex flex-col' htmlFor='modelo'>
-        Modelo del vehículo
-        <input
-          name='model'
-          className='bg-gray-50 border border-gray-600 p-2 rounded-lg m-2'
-          type='number'
-          min={1992}
-          max={2022}
-          placeholder='2014'
-          required
-        />
-      </label>
-
-      <button
-        type='submit'
-        className='col-span-2 bg-green-400 p-2 rounded-full shadow-md hover:bg-green-600 text-white'
-      >
-        Guardar vehiculo
-      </button>
-    </form>
-  </div>
-);
+          Guardar vehiculo
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default Vehiculos;

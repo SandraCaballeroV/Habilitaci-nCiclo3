@@ -1,23 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import PrivateLayout from 'layouts/PrivateLayout';
 import PublicLayout from 'layouts/PublicLayout';
 import Index from 'pages/Index';
-import Admin from '../src/pages/Index';
+import Admin from 'pages/admin/Index';
 import Vehiculos from 'pages/admin/Vehiculos';
-import Login from '../src/pages/auth/Login';
-import {BrowserRouter as Router, Switch, Route} from 'react-router-dom'
-import 'styles/styles.css'
-import Registro from '../src/pages/auth/Registro';
+import Login from 'pages/auth/Login';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import 'styles/styles.css';
+import Registro from 'pages/auth/Registro';
 import AuthLayout from 'layouts/AuthLayout';
-import Ventas from '../src/pages/admin/Ventas';
-import Usuarios from '../src/pages/admin/Usuarios';
+import { DarkModeContext } from 'context/darkMode';
+import Ventas from 'pages/admin/Ventas';
+import { Auth0Provider } from '@auth0/auth0-react';
+import Usuarios from 'pages/admin/Usuarios';
+import { UserContext } from 'context/userContext';
 import PrivateRoute from 'components/PrivateRoute';
-import "tailwindcss/tailwind.css";
-import {DarkModeContext , } from '../src/context/darkMode';
-import {UserContext} from '../src/context/userContext';
-
-
-
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -25,24 +22,36 @@ function App() {
   useEffect(() => {
     console.log('modo dark:', darkMode);
   }, [darkMode]);
-  return (
 
-    <div className='App'>
-           <DarkModeContext.Provider>
-  
-          <Router>
+  return (
+    <Auth0Provider
+      domain='misionlogin.us.auth0.com'
+      clientId='Mj6iwenni8cdxEB0FOsQWjR7PRzBo916'
+      redirectUri='http://localhost:3000/admin'
+      audience='api-habilitacion-ciclo3'
+      >
+      <div className='App'>
+        <UserContext.Provider value={{ userData, setUserData }}>
+          <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
+            <Router>
               <Switch>
                 <Route path={['/admin', '/admin/vehiculos', '/admin/ventas', '/admin/usuarios']}>
                   <PrivateLayout>
                     <Switch>
                       <Route path='/admin/vehiculos'>
+                        <PrivateRoute roleList={['admin']}>
                           <Vehiculos />
+                        </PrivateRoute>
                       </Route>
                       <Route path='/admin/ventas'>
+                        <PrivateRoute roleList={['admin', 'vendedor']}>
                           <Ventas />
+                        </PrivateRoute>
                       </Route>
                       <Route path='/admin/usuarios'>
+                        <PrivateRoute roleList={['admin']}>
                           <Usuarios />
+                        </PrivateRoute>
                       </Route>
                       <Route path='/admin'>
                         <Admin />
@@ -71,12 +80,11 @@ function App() {
                 </Route>
               </Switch>
             </Router>
-            </DarkModeContext.Provider>
-           
-      
+          </DarkModeContext.Provider>
+        </UserContext.Provider>
       </div>
- );
+    </Auth0Provider>
+  );
 }
 
 export default App;
-

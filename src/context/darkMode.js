@@ -5,4 +5,3 @@ export const DarkModeContext = createContext(null);
 export const useDarkMode = () => {
   return useContext(DarkModeContext);
 };
-

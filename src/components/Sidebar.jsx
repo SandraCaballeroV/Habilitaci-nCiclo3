@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ImagenLogo from './ImagenLogo';
+import ImagenLogo from '../components/ImagenLogo';
 import { Link } from 'react-router-dom';
 import useActiveRoute from 'hooks/useActiveRoute';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -9,7 +9,6 @@ const Sidebar = () => {
   const { user, logout } = useAuth0();
 
   const cerrarSesion = () => {
-    logout({ returnTo: 'https://whispering-bastion-16692.herokuapp.com/admin' });
     localStorage.setItem('token', null);
   };
 

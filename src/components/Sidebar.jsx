@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import ImagenLogo from '../components/ImagenLogo';
+//import ImagenLogo from '../components/ImagenLogo';
 import { Link } from 'react-router-dom';
 import useActiveRoute from 'hooks/useActiveRoute';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -15,7 +15,7 @@ const Sidebar = () => {
   return (
     <nav className='hidden lg:flex lg:w-72 border border-gray-300 h-full flex-col bg-gray-200 p-4 sidebar'>
       <Link to='/admin'>
-        <ImagenLogo />
+    
       </Link>
 
       <div className='my-4'>

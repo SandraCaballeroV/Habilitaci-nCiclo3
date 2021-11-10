@@ -28,7 +28,7 @@ function App() {
     <Auth0Provider
       domain='misionlogin.us.auth0.com'
       clientId='Mj6iwenni8cdxEB0FOsQWjR7PRzBo916'
-      redirectUri='http://localhost:3000/admin'
+      redirectUri='https://quiet-harbor-38019.herokuapp.com/admin'
         audience= 'api-habilitacion-ciclo3'
   
         >

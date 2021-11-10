@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from 'components/Sidebar';
-import SidebarResponsive from 'components/SiderbarResponsive';
+import SidebarResponsive from 'components/SidebarResponsive';
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactLoading from 'react-loading';
 import { obtenerDatosUsuario } from 'utils/api';
@@ -14,14 +14,7 @@ const PrivateLayout = ({ children }) => {
 
   useEffect(() => {
     const fetchAuth0Token = async () => {
-      // si se quieren hacer validaciones con el token:
-      // if (localStorage.getItem('token')) {
-      //   // validar fecha de expiracion del token
-      // } else {
-      //   // pedir token
-      // }
-
-      // 1. pedir token a auth0
+      
       setLoadingUserInformation(true);
       const accessToken = await getAccessTokenSilently({
         audience: `api-habilitacion-ciclo3`,
@@ -46,7 +39,7 @@ const PrivateLayout = ({ children }) => {
     if (isAuthenticated) {
       fetchAuth0Token();
     }
-  }, [isAuthenticated, getAccessTokenSilently, logout, setUserData]);
+  }, [isAuthenticated, getAccessTokenSilently]);
 
   if (isLoading || loadingUserInformation)
     return <ReactLoading type='cylon' color='#abc123' height={667} width={375} />;
@@ -56,7 +49,7 @@ const PrivateLayout = ({ children }) => {
   }
 
   return (
-    <div className='flex w-screen h-screen'>
+       <div className='flex w-screen h-screen'>
       <div className='flex flex-col lg:flex-row flex-nowrap h-full w-full'>
         <Sidebar />
         <SidebarResponsive />

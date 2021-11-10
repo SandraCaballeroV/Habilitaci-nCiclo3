@@ -14,6 +14,7 @@ const Navbar = () => {
           <TriggerDarkMode />
         </li>
         <li className='px-3'>
+         
           <button
             onClick={() => loginWithRedirect()}
             className='bg-indigo-500 p-2 text-white rounded-lg shadow-md hover:bg-indigo-700'
@@ -25,5 +26,4 @@ const Navbar = () => {
     </nav>
   );
 };
-
 export default Navbar;

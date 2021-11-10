@@ -4,94 +4,17 @@ import { crearVenta } from 'utils/api';
 import { obtenerVehiculos } from 'utils/api';
 import { obtenerUsuarios } from 'utils/api';
 
-// const Ventas = () => {
-//   const form = useRef(null);
-//   const [vendedores, setVendedores] = useState([]);
-//   const [vehiculos, setVehiculos] = useState([]);
-//   const [vehiculosTabla, setVehiculosTabla] = useState([]);
-
-//   useEffect(() => {
-//     const fetchVendores = async () => {
-//       await obtenerUsuarios(
-//         (response) => {
-//           console.log('respuesta de usuarios', response);
-//           setVendedores(response.data);
-//         },
-//         (error) => {
-//           console.error(error);
-//         }
-//       );
-//     };
-//     const fetchVehiculos = async () => {
-//       await obtenerVehiculos(
-//         (response) => {
-//           setVehiculos(response.data);
-//         },
-//         (error) => {
-//           console.error(error);
-//         }
-//       );
-//     };
-
-//     fetchVendores();
-//     fetchVehiculos();
-//   }, []);
-
-//   const modifyVeh = (v, e) => {
-//     const vehs = vehiculos.map((ve) => {
-//       if (ve._id === v._id) {
-//         ve.cantidad = e;
-//       }
-//       return ve;
-//     });
-//     setVehiculos(vehs);
-//   };
-
-//   useEffect(() => {
-//     console.log('vehiculos', vehiculos);
-//   }, [vehiculos]);
-
-//   return (
-//     <table>
-//       {vehiculos.map((v, index) => {
-//         return <Vehiculo key={index} v={v} index={index} modifyVeh={modifyVeh} />;
-//       })}
-//     </table>
-//   );
-// };
-
-// const Vehiculo = ({ v, index, modifyVeh }) => {
-//   const [vehi, setVehi] = useState(v);
-//   useEffect(() => {
-//     console.log('v', vehi);
-//   }, [vehi]);
-//   return (
-//     <tr>
-//       <td>{vehi.name}</td>
-//       <td>
-//         <input
-//           name={`cantidad_${index}`}
-//           value={vehi.cantidad}
-//           onChange={(e) => {
-//             modifyVeh(vehi, e.target.value);
-//             setVehi({ ...vehi, cantidad: e.target.value });
-//           }}
-//         />
-//       </td>
-//     </tr>
-//   );
-// };
 
 const Ventas = () => {
   const form = useRef(null);
   const [vendedores, setVendedores] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const [vehiculosTabla, setVehiculosTabla] = useState([]);
-
   useEffect(() => {
     const fetchVendores = async () => {
       await obtenerUsuarios(
         (response) => {
+          console.log('respuesta de usuarios', response);
           setVendedores(response.data);
         },
         (error) => {
@@ -109,22 +32,17 @@ const Ventas = () => {
         }
       );
     };
-
     fetchVendores();
     fetchVehiculos();
   }, []);
-
   const submitForm = async (e) => {
     e.preventDefault();
     const fd = new FormData(form.current);
-
     const formData = {};
     fd.forEach((value, key) => {
       formData[key] = value;
     });
-
     console.log('form data', formData);
-
     const listaVehiculos = Object.keys(formData)
       .map((k) => {
         if (k.includes('vehiculo')) {
@@ -133,13 +51,14 @@ const Ventas = () => {
         return null;
       })
       .filter((v) => v);
-
+    console.log('lista antes de cantidad', listaVehiculos);
+    console.log('lista despues de cantidad', listaVehiculos);
     const datosVenta = {
       vendedor: vendedores.filter((v) => v._id === formData.vendedor)[0],
       cantidad: formData.valor,
       vehiculos: listaVehiculos,
     };
-
+    console.log('lista vehiculos', listaVehiculos);
     await crearVenta(
       datosVenta,
       (response) => {
@@ -150,7 +69,6 @@ const Ventas = () => {
       }
     );
   };
-
   return (
     <div className='flex h-full w-full items-center justify-center'>
       <form ref={form} onSubmit={submitForm} className='flex flex-col h-full'>
@@ -166,13 +84,11 @@ const Ventas = () => {
             })}
           </select>
         </label>
-
         <TablaVehiculos
           vehiculos={vehiculos}
           setVehiculos={setVehiculos}
           setVehiculosTabla={setVehiculosTabla}
         />
-
         <label className='flex flex-col'>
           <span className='text-2xl font-gray-900'>Valor Total Venta</span>
           <input
@@ -192,21 +108,21 @@ const Ventas = () => {
     </div>
   );
 };
-
 const TablaVehiculos = ({ vehiculos, setVehiculos, setVehiculosTabla }) => {
   const [vehiculoAAgregar, setVehiculoAAgregar] = useState({});
   const [filasTabla, setFilasTabla] = useState([]);
-
   useEffect(() => {
+    console.log(vehiculoAAgregar);
+  }, [vehiculoAAgregar]);
+  useEffect(() => {
+    console.log('filasTabla', filasTabla);
     setVehiculosTabla(filasTabla);
   }, [filasTabla, setVehiculosTabla]);
-
   const agregarNuevoVehiculo = () => {
     setFilasTabla([...filasTabla, vehiculoAAgregar]);
     setVehiculos(vehiculos.filter((v) => v._id !== vehiculoAAgregar._id));
     setVehiculoAAgregar({});
   };
-
   const eliminarVehiculo = (vehiculoAEliminar) => {
     setFilasTabla(filasTabla.filter((v) => v._id !== vehiculoAEliminar._id));
     setVehiculos([...vehiculos, vehiculoAEliminar]);
@@ -217,7 +133,6 @@ const TablaVehiculos = ({ vehiculos, setVehiculos, setVehiculosTabla }) => {
       filasTabla.map((ft) => {
         if (ft._id === vehiculo.id) {
           ft.cantidad = cantidad;
-          ft.total = vehiculo.valor * cantidad;
         }
         return ft;
       })
@@ -264,8 +179,6 @@ const TablaVehiculos = ({ vehiculos, setVehiculos, setVehiculosTabla }) => {
             <th>Marca</th>
             <th>Modelo</th>
             <th>Cantidad</th>
-            <th>Valor Unitario</th>
-            <th>Total</th>
             <th>Eliminar</th>
             <th className='hidden'>Input</th>
           </tr>
@@ -275,7 +188,7 @@ const TablaVehiculos = ({ vehiculos, setVehiculos, setVehiculosTabla }) => {
             return (
               <FilaVehiculo
                 key={el._id}
-                veh={el}
+                vehiculo={el}
                 index={index}
                 eliminarVehiculo={eliminarVehiculo}
                 modificarVehiculo={modificarVehiculo}
@@ -287,12 +200,7 @@ const TablaVehiculos = ({ vehiculos, setVehiculos, setVehiculosTabla }) => {
     </div>
   );
 };
-
-const FilaVehiculo = ({ veh, index, eliminarVehiculo, modificarVehiculo }) => {
-  const [vehiculo, setVehiculo] = useState(veh);
-  useEffect(() => {
-    console.log('veh', vehiculo);
-  }, [vehiculo]);
+const FilaVehiculo = ({ vehiculo, index, eliminarVehiculo, modificarVehiculo }) => {
   return (
     <tr>
       <td>{vehiculo._id}</td>
@@ -305,32 +213,20 @@ const FilaVehiculo = ({ veh, index, eliminarVehiculo, modificarVehiculo }) => {
             type='number'
             name={`cantidad_${index}`}
             value={vehiculo.cantidad}
-            onChange={(e) => {
-              modificarVehiculo(vehiculo, e.target.value === '' ? '0' : e.target.value);
-              setVehiculo({
-                ...vehiculo,
-                cantidad: e.target.value === '' ? '0' : e.target.value,
-                total:
-                  parseFloat(vehiculo.valor) *
-                  parseFloat(e.target.value === '' ? '0' : e.target.value),
-              });
-            }}
+            onChange={(e) => modificarVehiculo(vehiculo, e.target.value)}
           />
         </label>
       </td>
-      <td>{vehiculo.valor}</td>
-      <td>{parseFloat(vehiculo.total ?? 0)}</td>
       <td>
         <i
           onClick={() => eliminarVehiculo(vehiculo)}
           className='fas fa-minus text-red-500 cursor-pointer'
         />
       </td>
-      <td className='hidden'>
+      <td>
         <input hidden defaultValue={vehiculo._id} name={`vehiculo_${index}`} />
       </td>
     </tr>
   );
 };
-
 export default Ventas;

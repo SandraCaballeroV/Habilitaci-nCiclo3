@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-//import ImagenLogo from '../components/ImagenLogo';
+import ImagenLogo from './ImagenLogo';
 import { Link } from 'react-router-dom';
 import useActiveRoute from 'hooks/useActiveRoute';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -7,20 +6,19 @@ import PrivateComponent from './PrivateComponent';
 
 const Sidebar = () => {
   const { user, logout } = useAuth0();
-
   const cerrarSesion = () => {
+    logout({ returnTo: 'http://localhost:3000/admin' });
     localStorage.setItem('token', null);
   };
-
   return (
     <nav className='hidden lg:flex lg:w-72 border border-gray-300 h-full flex-col bg-gray-200 p-4 sidebar'>
       <Link to='/admin'>
-    
+        <ImagenLogo />
       </Link>
 
       <div className='my-4'>
         <Ruta icono='fas fa-user' ruta='/admin/perfil' nombre='Perfil' usuario={user} />
-        <PrivateComponent roleList={['admin']}>
+         <PrivateComponent roleList={['admin']}>
           <Ruta icono='fas fa-car' ruta='/admin/vehiculos' nombre='Vehículos' />
         </PrivateComponent>
         <PrivateComponent roleList={['admin', 'vendedor']}>
@@ -34,7 +32,6 @@ const Sidebar = () => {
     </nav>
   );
 };
-
 const Ruta = ({ icono, ruta, nombre, usuario }) => {
   console.log('usuario', usuario);
   const isActive = useActiveRoute(ruta);
@@ -60,5 +57,4 @@ const Ruta = ({ icono, ruta, nombre, usuario }) => {
     </Link>
   );
 };
-
 export default Sidebar;

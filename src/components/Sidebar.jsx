@@ -16,7 +16,7 @@ const Sidebar = () => {
   return (
     <nav className='hidden lg:flex lg:w-72 border border-gray-300 h-full flex-col bg-gray-200 p-4 sidebar'>
       <Link to='/admin'>
-        <ImagenLogo />
+    
       </Link>
       <div className='my-4'>
         <Ruta icono='fas fa-user' ruta='/admin/perfil' nombre='Perfil' usuario={user} />

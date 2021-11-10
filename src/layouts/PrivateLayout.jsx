@@ -5,16 +5,13 @@ import { useAuth0 } from '@auth0/auth0-react';
 import ReactLoading from 'react-loading';
 import { obtenerDatosUsuario } from 'utils/api';
 import { useUser } from 'context/userContext';
-
 const PrivateLayout = ({ children }) => {
   const { isAuthenticated, isLoading, loginWithRedirect, getAccessTokenSilently, logout } =
     useAuth0();
   const [loadingUserInformation, setLoadingUserInformation] = useState(false);
   const { setUserData } = useUser();
-
   useEffect(() => {
     const fetchAuth0Token = async () => {
-      
       setLoadingUserInformation(true);
       const accessToken = await getAccessTokenSilently({
         audience: `api-habilitacion-ciclo3`,
@@ -39,17 +36,15 @@ const PrivateLayout = ({ children }) => {
     if (isAuthenticated) {
       fetchAuth0Token();
     }
-  }, [isAuthenticated, getAccessTokenSilently]);
+  }, [isAuthenticated, getAccessTokenSilently, logout, setUserData]);
 
   if (isLoading || loadingUserInformation)
     return <ReactLoading type='cylon' color='#abc123' height={667} width={375} />;
-
   if (!isAuthenticated) {
     return loginWithRedirect();
   }
-
   return (
-       <div className='flex w-screen h-screen'>
+    <div className='flex w-screen h-screen'>
       <div className='flex flex-col lg:flex-row flex-nowrap h-full w-full'>
         <Sidebar />
         <SidebarResponsive />
@@ -60,5 +55,4 @@ const PrivateLayout = ({ children }) => {
     </div>
   );
 };
-
 export default PrivateLayout;

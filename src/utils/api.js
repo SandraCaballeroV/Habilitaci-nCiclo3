@@ -1,16 +1,15 @@
 import axios from 'axios';
 
 // const baseURL = "http://localhost:5000"
-const baseURL = "https://whispering-bastion-16692.herokuapp.com/"
+
+const baseURL = 'https://whispering-bastion-16692.herokuapp.com/';
 
 const getToken = () => {
   return `Bearer ${localStorage.getItem('token')}`;
 };
-
 export const obtenerVehiculos = async (successCallback, errorCallback) => {
   const options = {
     method: 'GET',
-    
     url: `${baseURL}/vehiculos/`,
     headers: {
       Authorization: getToken(),
@@ -21,7 +20,6 @@ export const obtenerVehiculos = async (successCallback, errorCallback) => {
 export const crearVehiculo = async (data, successCallback, errorCallback) => {
   const options = {
     method: 'POST',
-    
     url: `${baseURL}/vehiculos/`,
     headers: { 'Content-Type': 'application/json', Authorization: getToken() },
     data,
@@ -31,7 +29,6 @@ export const crearVehiculo = async (data, successCallback, errorCallback) => {
 export const editarVehiculo = async (id, data, successCallback, errorCallback) => {
   const options = {
     method: 'PATCH',
-    
     url: `${baseURL}/vehiculos/${id}/`,
     headers: { 'Content-Type': 'application/json', Authorization: getToken() },
     data,
@@ -50,7 +47,7 @@ export const eliminarVehiculo = async (id, successCallback, errorCallback) => {
 export const obtenerUsuarios = async (successCallback, errorCallback) => {
   const options = {
     method: 'GET',
-    url: `${baseURL}/usuarios',
+    url: `${baseURL}/usuarios/`,
     headers: {
       Authorization: getToken(),
     },
@@ -60,7 +57,7 @@ export const obtenerUsuarios = async (successCallback, errorCallback) => {
 export const obtenerDatosUsuario = async (successCallback, errorCallback) => {
   const options = {
     method: 'GET',
-    url: `${baseURL}/usuarios/self',
+    url: `${baseURL}/usuarios/self/`,
     headers: {
       Authorization: getToken(), // 3. enviarle el token a backend
     },
@@ -70,7 +67,6 @@ export const obtenerDatosUsuario = async (successCallback, errorCallback) => {
 export const editarUsuario = async (id, data, successCallback, errorCallback) => {
   const options = {
     method: 'PATCH',
-    
     url: `${baseURL}/usuarios/${id}/`,
     headers: { 'Content-Type': 'application/json', Authorization: getToken() },
     data,
@@ -82,7 +78,7 @@ export const crearVenta = async (data, successCallback, errorCallback) => {
   const options = {
     method: 'POST',
   
-    url: `${baseURL}/ventas',
+    url: `${baseURL}/ventas/`,
     headers: { 'Content-Type': 'application/json', Authorization: getToken() },
     data,
   };

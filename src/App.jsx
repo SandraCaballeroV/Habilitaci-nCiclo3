@@ -26,7 +26,7 @@ function App() {
     <Auth0Provider
       domain='misionlogin.us.auth0.com'
       clientId='Mj6iwenni8cdxEB0FOsQWjR7PRzBo916'
-      redirectUri='https://whispering-bastion-16692.herokuapp.com/admin'
+      redirectUri='https://boiling-gorge-60353.herokuapp.com/admin'
         audience= 'api-habilitacion-ciclo3'
         >
         <div className='App'>

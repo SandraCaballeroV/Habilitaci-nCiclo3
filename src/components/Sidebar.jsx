@@ -1,15 +1,15 @@
-import React, { useEffect } from 'react';
+
 import ImagenLogo from './ImagenLogo';
 import { Link } from 'react-router-dom';
 import useActiveRoute from 'hooks/useActiveRoute';
 import { useAuth0 } from '@auth0/auth0-react';
 import PrivateComponent from './PrivateComponent';
+
 const Sidebar = () => {
   const { user, logout } = useAuth0();
 
   const cerrarSesion = () => {
-  
-    logout({ returnTo: 'https://whispering-bastion-16692.herokuapp.com/admin' });
+    logout({ returnTo: 'http://localhost:3000/admin' });
     localStorage.setItem('token', null);
   };
 
@@ -18,6 +18,7 @@ const Sidebar = () => {
       <Link to='/admin'>
         <ImagenLogo />
       </Link>
+
       <div className='my-4'>
         <Ruta icono='fas fa-user' ruta='/admin/perfil' nombre='Perfil' usuario={user} />
         <PrivateComponent roleList={['admin']}>
@@ -34,6 +35,7 @@ const Sidebar = () => {
     </nav>
   );
 };
+
 const Ruta = ({ icono, ruta, nombre, usuario }) => {
   console.log('usuario', usuario);
   const isActive = useActiveRoute(ruta);
@@ -59,4 +61,5 @@ const Ruta = ({ icono, ruta, nombre, usuario }) => {
     </Link>
   );
 };
+
 export default Sidebar;

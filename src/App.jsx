@@ -26,65 +26,63 @@ function App() {
     <Auth0Provider
       domain='misionlogin.us.auth0.com'
       clientId='Mj6iwenni8cdxEB0FOsQWjR7PRzBo916'
-      redirectUri='https://boiling-gorge-60353.herokuapp.com/admin'
+      redirectUri='https://whispering-bastion-16692.herokuapp.com/admin'
         audience= 'api-habilitacion-ciclo3'
-  
-        
         >
-      <div className='App'>
-        <UserContext.Provider value={{ userData, setUserData }}>
-          <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
-            <Router>
-              <Switch>
-                <Route path={['/admin', '/admin/vehiculos', '/admin/ventas', '/admin/usuarios']}>
-                  <PrivateLayout>
-                    <Switch>
-                      <Route path='/admin/vehiculos'>
-                        <PrivateRoute roleList={['admin']}>
-                          <Vehiculos />
-                        </PrivateRoute>
+        <div className='App'>
+          <UserContext.Provider value={{ userData, setUserData }}>
+            <DarkModeContext.Provider value={{ darkMode, setDarkMode }}>
+              <Router>
+                <Switch>
+                  <Route path={['/admin', '/admin/vehiculos', '/admin/ventas', '/admin/usuarios']}>
+                    <PrivateLayout>
+                      <Switch>
+                        <Route path='/admin/vehiculos'>
+                          <PrivateRoute roleList={['admin']}>
+                            <Vehiculos />
+                          </PrivateRoute>
+                        </Route>
+                        <Route path='/admin/ventas'>
+                          <PrivateRoute roleList={['admin', 'vendedor']}>
+                            <Ventas />
+                          </PrivateRoute>
+                        </Route>
+                        <Route path='/admin/usuarios'>
+                          <PrivateRoute roleList={['admin']}>
+                            <Usuarios />
+                          </PrivateRoute>
+                        </Route>
+                        <Route path='/admin'>
+                          <Admin />
+                        </Route>
+                      </Switch>
+                    </PrivateLayout>
+                  </Route>
+                  <Route path={['/login', '/registro']}>
+                    <AuthLayout>
+                      <Switch>
+                        <Route path='/login'>
+                          <Login />
+                        </Route>
+                        <Route path='/registro'>
+                          <Registro />
+                        </Route>
+                      </Switch>
+                    </AuthLayout>
+                  </Route>
+                  <Route path={['/']}>
+                    <PublicLayout>
+                      <Route path='/'>
+                        <Index />
                       </Route>
-                      <Route path='/admin/ventas'>
-                        <PrivateRoute roleList={['admin', 'vendedor']}>
-                          <Ventas />
-                        </PrivateRoute>
-                      </Route>
-                      <Route path='/admin/usuarios'>
-                        <PrivateRoute roleList={['admin']}>
-                          <Usuarios />
-                        </PrivateRoute>
-                      </Route>
-                      <Route path='/admin'>
-                        <Admin />
-                      </Route>
-                    </Switch>
-                  </PrivateLayout>
-                </Route>
-                <Route path={['/login', '/registro']}>
-                  <AuthLayout>
-                    <Switch>
-                      <Route path='/login'>
-                        <Login />
-                      </Route>
-                      <Route path='/registro'>
-                        <Registro />
-                      </Route>
-                    </Switch>
-                  </AuthLayout>
-                </Route>
-                <Route path={['/']}>
-                  <PublicLayout>
-                    <Route path='/'>
-                      <Index />
-                    </Route>
-                  </PublicLayout>
-                </Route>
-              </Switch>
-            </Router>
-          </DarkModeContext.Provider>
-        </UserContext.Provider>
-      </div>
-    </Auth0Provider>
-  );
-}
-export default App;
+                    </PublicLayout>
+                  </Route>
+                </Switch>
+              </Router>
+            </DarkModeContext.Provider>
+          </UserContext.Provider>
+        </div>
+      </Auth0Provider>
+    );
+  }
+  export default App;

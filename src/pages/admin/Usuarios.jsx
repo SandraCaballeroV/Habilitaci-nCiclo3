@@ -3,8 +3,10 @@ import { nanoid } from 'nanoid';
 import React, { useState, useEffect } from 'react';
 import { editarUsuario } from 'utils/api';
 import { obtenerUsuarios } from 'utils/api';
+
 const Usuarios = () => {
   const [usuarios, setUsuarios] = useState([]);
+
   useEffect(() => {
     const fetchUsuarios = async () => {
       await obtenerUsuarios(
@@ -19,6 +21,7 @@ const Usuarios = () => {
     };
     fetchUsuarios();
   }, []);
+
   return (
     <div>
       <div>admin usuarios</div>
@@ -54,8 +57,10 @@ const Usuarios = () => {
     </div>
   );
 };
+
 const RolesUsuario = ({ user }) => {
   const [rol, setRol] = useState(user.rol);
+
   useEffect(() => {
     const editUsuario = async () => {
       await editarUsuario(
@@ -124,4 +129,5 @@ const EstadoUsuario = ({ user }) => {
     </select>
   );
 };
+
 export default Usuarios;

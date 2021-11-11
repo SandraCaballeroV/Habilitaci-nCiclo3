@@ -3,33 +3,41 @@ import axios from 'axios';
 import { nanoid } from 'nanoid';
 import { obtenerUsuarios } from 'utils/api';
 import { obtenerVehiculos } from 'utils/api';
+
 const Test = () => {
   const [usuarios, setUsuarios] = useState([]);
   const [vehiculos, setVehiculos] = useState([]);
   const form = useRef(null);
+
   useEffect(() => {
     obtenerVehiculos(setVehiculos);
     obtenerUsuarios(setUsuarios);
   }, []);
+
   useEffect(() => {
     console.log(vehiculos);
   }, [vehiculos]);
+
   useEffect(() => {
     console.log(usuarios);
   }, [usuarios]);
+
   const submitForm = async (e) => {
     e.preventDefault();
     const fd = new FormData(form.current);
+
     const nuevaVenta = {};
     fd.forEach((value, key) => {
       nuevaVenta[key] = value;
     });
+
     const informacionConsolidada = {
       valor: nuevaVenta.cantidadVenta,
       vehiculo: vehiculos.filter((el) => el._id === nuevaVenta.vehiculo)[0],
       vendedor: usuarios.filter((el) => el._id === nuevaVenta.vendedor)[0],
     };
     console.log(informacionConsolidada);
+
     const options = {
       method: 'POST',
       url: 'http://localhost:5000/ventas/',
@@ -48,6 +56,7 @@ const Test = () => {
         // toast.error('Error creando un vehículo');
       });
   };
+
   return (
     <div>
       Crear nueva venta
@@ -82,4 +91,5 @@ const Test = () => {
     </div>
   );
 };
+
 export default Test;

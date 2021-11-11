@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from 'components/Sidebar';
-import SidebarResponsive from 'components/SiderbarResponsive';
+import SidebarResponsive from 'components/SidebarResponsive';
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactLoading from 'react-loading';
 import { obtenerDatosUsuario } from 'utils/api';
 import { useUser } from 'context/userContext';
-
-
 const PrivateLayout = ({ children }) => {
   const { isAuthenticated, isLoading, loginWithRedirect, getAccessTokenSilently, logout } =
     useAuth0();
@@ -14,8 +12,6 @@ const PrivateLayout = ({ children }) => {
   const { setUserData } = useUser();
   useEffect(() => {
     const fetchAuth0Token = async () => {
-   
-      // 1. pedir token a auth0
       setLoadingUserInformation(true);
       const accessToken = await getAccessTokenSilently({
         audience: `api-habilitacion-ciclo3`,
@@ -40,7 +36,7 @@ const PrivateLayout = ({ children }) => {
     if (isAuthenticated) {
       fetchAuth0Token();
     }
-
+  
   }, [isAuthenticated, getAccessTokenSilently, logout, setUserData]);
 
   if (isLoading || loadingUserInformation)

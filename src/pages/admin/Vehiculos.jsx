@@ -14,6 +14,7 @@ const Vehiculos = () => {
   const [colorBoton, setColorBoton] = useState('indigo');
   const [ejecutarConsulta, setEjecutarConsulta] = useState(true);
   const [loading, setLoading] = useState(false);
+
   useEffect(() => {
     const fetchVehiculos = async () => {
       setLoading(true);
@@ -35,12 +36,14 @@ const Vehiculos = () => {
       fetchVehiculos();
     }
   }, [ejecutarConsulta]);
+
   useEffect(() => {
     //obtener lista de vehículos desde el backend
     if (mostrarTabla) {
       setEjecutarConsulta(true);
     }
   }, [mostrarTabla]);
+
   useEffect(() => {
     if (mostrarTabla) {
       setTextoBoton('Crear Nuevo Vehículo');
@@ -65,6 +68,7 @@ const Vehiculos = () => {
           {textoBoton}
         </button>
       </div>
+
       {mostrarTabla ? (
         <TablaVehiculos
           loading={loading}
@@ -82,9 +86,11 @@ const Vehiculos = () => {
     </div>
   );
 };
+
 const TablaVehiculos = ({ loading, listaVehiculos, setEjecutarConsulta }) => {
   const [busqueda, setBusqueda] = useState('');
   const [vehiculosFiltrados, setVehiculosFiltrados] = useState(listaVehiculos);
+
   useEffect(() => {
     setVehiculosFiltrados(
       listaVehiculos.filter((elemento) => {
@@ -92,6 +98,7 @@ const TablaVehiculos = ({ loading, listaVehiculos, setEjecutarConsulta }) => {
       })
     );
   }, [busqueda, listaVehiculos]);
+
   return (
     <div className='flex flex-col items-center justify-center w-full'>
       <input
@@ -145,6 +152,7 @@ const TablaVehiculos = ({ loading, listaVehiculos, setEjecutarConsulta }) => {
     </div>
   );
 };
+
 const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
   const [edit, setEdit] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -154,8 +162,10 @@ const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
     brand: vehiculo.brand,
     model: vehiculo.model,
   });
+
   const actualizarVehiculo = async () => {
     //enviar la info al backend
+
     await editarVehiculo(
       vehiculo._id,
       {
@@ -175,6 +185,7 @@ const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
       }
     );
   };
+
   const deleteVehicle = async () => {
     await eliminarVehiculo(
       vehiculo._id,
@@ -188,8 +199,10 @@ const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
         toast.error('Error eliminando el vehículo');
       }
     );
+
     setOpenDialog(false);
   };
+
   return (
     <tr>
       {edit ? (
@@ -232,7 +245,8 @@ const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
           <td>{vehiculo.model}</td>
         </>
       )}
-       <PrivateComponent roleList={['admin']}>
+
+      <PrivateComponent roleList={['admin']}>
         <td>
           <div className='flex w-full justify-around'>
             {edit ? (
@@ -267,7 +281,6 @@ const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
               </>
             )}
           </div>
-        
 
           <Dialog open={openDialog}>
             <div className='p-8 flex flex-col'>
@@ -295,15 +308,19 @@ const FilaVehiculo = ({ vehiculo, setEjecutarConsulta }) => {
     </tr>
   );
 };
+
 const FormularioCreacionVehiculos = ({ setMostrarTabla, listaVehiculos, setVehiculos }) => {
   const form = useRef(null);
+
   const submitForm = async (e) => {
     e.preventDefault();
     const fd = new FormData(form.current);
+
     const nuevoVehiculo = {};
     fd.forEach((value, key) => {
       nuevoVehiculo[key] = value;
     });
+
     await crearVehiculo(
       {
         name: nuevoVehiculo.name,
@@ -319,9 +336,28 @@ const FormularioCreacionVehiculos = ({ setMostrarTabla, listaVehiculos, setVehic
         toast.error('Error creando un vehículo');
       }
     );
-    
+
+    // const options = {
+    //   method: 'POST',
+    //   url: 'http://localhost:5000/vehiculos/nuevo/',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   data: { name: nuevoVehiculo.name, brand: nuevoVehiculo.brand, model: nuevoVehiculo.model },
+    // };
+
+    // await axios
+    //   .request(options)
+    //   .then(function (response) {
+    //     console.log(response.data);
+    //     toast.success('Vehículo agregado con éxito');
+    //   })
+    //   .catch(function (error) {
+    //     console.error(error);
+    //     toast.error('Error creando un vehículo');
+    //   });
+
     setMostrarTabla(true);
   };
+
   return (
     <div className='flex flex-col items-center justify-center'>
       <h2 className='text-2xl font-extrabold text-gray-800'>Crear nuevo vehículo</h2>
@@ -366,6 +402,7 @@ const FormularioCreacionVehiculos = ({ setMostrarTabla, listaVehiculos, setVehic
             required
           />
         </label>
+
         <button
           type='submit'
           className='col-span-2 bg-green-400 p-2 rounded-full shadow-md hover:bg-green-600 text-white'
@@ -376,4 +413,5 @@ const FormularioCreacionVehiculos = ({ setMostrarTabla, listaVehiculos, setVehic
     </div>
   );
 };
+
 export default Vehiculos;

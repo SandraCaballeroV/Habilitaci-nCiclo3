@@ -8,15 +8,15 @@ const Sidebar = () => {
   const { user, logout } = useAuth0();
 
   const cerrarSesion = () => {
-    
-    logout({ returnTo: 'https://boiling-gorge-60353.herokuapp.com/admin' });
+  
+    logout({ returnTo: 'https://whispering-bastion-16692.herokuapp.com/admin' });
     localStorage.setItem('token', null);
   };
 
   return (
     <nav className='hidden lg:flex lg:w-72 border border-gray-300 h-full flex-col bg-gray-200 p-4 sidebar'>
       <Link to='/admin'>
-    
+        <ImagenLogo />
       </Link>
       <div className='my-4'>
         <Ruta icono='fas fa-user' ruta='/admin/perfil' nombre='Perfil' usuario={user} />

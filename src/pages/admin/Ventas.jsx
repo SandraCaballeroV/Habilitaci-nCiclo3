@@ -4,6 +4,7 @@ import { crearVenta } from 'utils/api';
 import { obtenerVehiculos } from 'utils/api';
 import { obtenerUsuarios } from 'utils/api';
 
+
 const Ventas = () => {
   const form = useRef(null);
   const [vendedores, setVendedores] = useState([]);
@@ -13,6 +14,7 @@ const Ventas = () => {
     const fetchVendores = async () => {
       await obtenerUsuarios(
         (response) => {
+        
           setVendedores(response.data);
         },
         (error) => {
@@ -50,12 +52,15 @@ const Ventas = () => {
       })
       .filter((v) => v);
 
+    
+
     const datosVenta = {
       vendedor: vendedores.filter((v) => v._id === formData.vendedor)[0],
       cantidad: formData.valor,
       vehiculos: listaVehiculos,
     };
 
+    
 
     await crearVenta(
       datosVenta,
@@ -198,7 +203,6 @@ const TablaVehiculos = ({ vehiculos, setVehiculos, setVehiculosTabla }) => {
     </div>
   );
 };
-
 const FilaVehiculo = ({ veh, index, eliminarVehiculo, modificarVehiculo }) => {
   const [vehiculo, setVehiculo] = useState(veh);
   useEffect(() => {
@@ -216,6 +220,7 @@ const FilaVehiculo = ({ veh, index, eliminarVehiculo, modificarVehiculo }) => {
             type='number'
             name={`cantidad_${index}`}
             value={vehiculo.cantidad}
+          
             onChange={(e) => {
               modificarVehiculo(vehiculo, e.target.value === '' ? '0' : e.target.value);
               setVehiculo({
@@ -237,6 +242,7 @@ const FilaVehiculo = ({ veh, index, eliminarVehiculo, modificarVehiculo }) => {
           className='fas fa-minus text-red-500 cursor-pointer'
         />
       </td>
+      
       <td className='hidden'>
         <input hidden defaultValue={vehiculo._id} name={`vehiculo_${index}`} />
       </td>

@@ -47,6 +47,7 @@ export const eliminarVehiculo = async (id, successCallback, errorCallback) => {
 export const obtenerUsuarios = async (successCallback, errorCallback) => {
   const options = {
     method: 'GET',
+    
     url: `${baseURL}/usuarios/`,
     headers: {
       Authorization: getToken(),
@@ -57,6 +58,7 @@ export const obtenerUsuarios = async (successCallback, errorCallback) => {
 export const obtenerDatosUsuario = async (successCallback, errorCallback) => {
   const options = {
     method: 'GET',
+    
     url: `${baseURL}/usuarios/self/`,
     headers: {
       Authorization: getToken(), // 3. enviarle el token a backend

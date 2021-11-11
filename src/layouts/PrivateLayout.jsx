@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Sidebar from 'components/Sidebar';
-import SidebarResponsive from 'components/SidebarResponsive';
+import SidebarResponsive from 'components/SiderbarResponsive';
 import { useAuth0 } from '@auth0/auth0-react';
 import ReactLoading from 'react-loading';
 import { obtenerDatosUsuario } from 'utils/api';
